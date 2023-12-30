@@ -1,16 +1,26 @@
-// Add an event listener to the blackboard
-const blackboard = document.getElementById('blackboard');
+const blackboard = document.getElementById("blackboard");
+const chalkAudio = document.getElementById("chalkAudio");
+let isMouseDown = false;
 
-// Define the sound file path (update with your sound file)
-const soundFilePath = 'path/to/your/sound/file.mp3';
+blackboard.addEventListener('dragstart',function(e){
+    e.preventDefault();
+});
 
-// Create an audio element
-const audio = new Audio(soundFilePath);
+blackboard.addEventListener('mousedown', function(){
+    isMouseDown = true;
+    chalkAudio.play();
+});
 
-// Function to play the sound
-function playSound() {
-  audio.play();
-}
+document.addEventListener('mouseup', function(){
+    isMouseDown = false;
+    chalkAudio.pause();
+    chalkAudio.currentTime = 0;
+});
 
-// Add the mousemove event listener
-blackboard.addEventListener('mousemove', playSound);
+blackboard.addEventListener('mouseout',function(){
+    if (isMouseDown) {
+        isMouseDown = false;
+        chalkAudio.pause();
+        chalkAudio.currentTime = 0;
+    }
+});
